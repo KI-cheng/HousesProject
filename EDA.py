@@ -74,5 +74,5 @@ if __name__ == '__main__':
     df = pd.read_csv('rent_houses_washed2.csv')
     df = pre_processing(df=df)
     # random_forest(df=df)
-    # ANOVA(df=df)
+    ANOVA(df=df)
     # cool_warm(df=df)
