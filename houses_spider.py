@@ -10,7 +10,6 @@ import csv
 import hashlib
 import pandas as pd
 
-
 etree = html.etree
 
 
@@ -37,12 +36,13 @@ def get_Page_Data(url):
     return page_text
 
 
-def id_md5(date, region, address,position):
+def id_md5(date, region, address, position):
     combine = f"{date}{region}{address}{position}"
     obj = hashlib.md5()
     obj.update(combine.encode(encoding='utf-8'))
     md5_hash = obj.hexdigest()
     return md5_hash
+
 
 def get_message_from_page(page_text):
     # 测试后发现：租房和卖房信息共区，按照间隔区分即可
@@ -99,7 +99,9 @@ def get_message_from_page(page_text):
                     house.append(prices[0])
                     house.append(prices[1])
                 elif i == 18:
-                    house.append(elements[i].text.replace(' ', '').replace('*', '').replace('\n', '').strip('"').strip(' '))
+                    house.append(
+                        elements[i].text.replace(' ', '').replace('*', '').replace('\n', '').strip('"').strip(' '))
+
                 else:
                     house.append(elements[i].text)
             print(house)
@@ -125,15 +127,8 @@ def start_csv():
     f.close()
 
 
-def deduplication():
-    df = pd.read_csv('rent_houses.csv')
-    results = df.drop_duplicates(subset='id', keep='first')
-    results.to_csv('rent_houses_washed.csv', index=False)
-
-
-if __name__ == '__main__':
-    # start_csv()
-    for i in range(1, 1001):
+def start_spider(x=1, y=1001):
+    for i in range(x, y):
         url = f"https://www.house730.com/deal/g{i}t2/?type=rent"
         page_text = get_Page_Data(url=url)
         if page_text == 'error':
@@ -144,5 +139,17 @@ if __name__ == '__main__':
             continue
         save_data(all_houses)
         print(f"已爬取第{i}页")
-    deduplication()
 
+
+def washing():
+    df = pd.read_csv('rent_houses.csv')
+    results = df.drop_duplicates(subset='id', keep='first')
+    df_filtered = results[~results['sold_price(HKD)'].astype(str).str.contains('萬')]
+    df_cleaned = df_filtered.dropna()
+    df_cleaned.to_csv('rent_houses_washed2.csv', index=False)
+
+
+if __name__ == '__main__':
+    # start_csv()
+    # start_spider()
+    washing()
