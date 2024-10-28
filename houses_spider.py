@@ -65,9 +65,9 @@ def get_message_from_page(page_text):
                 if i == 9:
                     tags = elements[i].text.split(" ")
                     # 观察得知无论无何中间是描述中高低层的，左右两边分别是描述位置（座）和房间（室）
-                    location = 'NA'
-                    floor = 'NA'
-                    room = 'NA'
+                    location = ''
+                    floor = ''
+                    room = ''
                     flag = 0
                     for tag in tags:
                         if '層' in tag:
@@ -91,16 +91,17 @@ def get_message_from_page(page_text):
                     house.append(floor)
                     house.append(room)
                 elif i == 11:
-                    areas = elements[i].text.replace('呎', '').replace('--', 'NA').split(" / ")
+                    areas = elements[i].text.replace('呎', '').replace('--', '').split(" / ")
                     house.append(areas[0])
                     house.append(areas[1])
                 elif i == 12:
-                    prices = elements[i].text.replace('$', '').replace('--', 'NA').split(" / ")
+                    prices = elements[i].text.replace('$', '').replace('--', '').split(" / ")
                     house.append(prices[0])
                     house.append(prices[1])
                 elif i == 18:
                     house.append(
-                        elements[i].text.replace(' ', '').replace('*', '').replace('\n', '').strip('"').strip(' '))
+                        elements[i].text.replace(' ', '').replace('*', '').replace('\n', '').strip('"').strip(' ')
+                    )
 
                 else:
                     house.append(elements[i].text)
