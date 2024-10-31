@@ -113,7 +113,7 @@ def get_message_from_page(page_text):
 
 
 def save_data(all_houses):
-    with open('rent_houses.csv', 'a', newline='', encoding='utf-8') as f:
+    with open('rent.csv', 'a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerows(all_houses)
     f.close()
@@ -122,7 +122,7 @@ def save_data(all_houses):
 def start_csv():
     column_names = "id,date,region,address,location,floor,room,sold_price(HKD)" \
                    ",actual_area(ft.),built_area(ft.),actual_price(HKD/ft.),built_price(HKD/ft.),source"
-    with open('rent_houses.csv', 'w', newline='', encoding='utf-8') as f:
+    with open('rent.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(column_names.split(','))
     f.close()
@@ -130,7 +130,7 @@ def start_csv():
 
 def start_spider(x=1, y=1001):
     for i in range(x, y):
-        url = f"https://www.house730.com/deal/g{i}t2/?type=rent"
+        url = f"https://www.house730.com/deal/g{i}t2/?type=rent&dmax=7727&dmin=500"
         page_text = get_Page_Data(url=url)
         if page_text == 'error':
             continue
@@ -143,11 +143,11 @@ def start_spider(x=1, y=1001):
 
 
 def washing():
-    df = pd.read_csv('rent_houses.csv')
+    df = pd.read_csv('rent.csv')
     results = df.drop_duplicates(subset='id', keep='first')
     df_filtered = results[~results['sold_price(HKD)'].astype(str).str.contains('萬')]
     df_cleaned = df_filtered.dropna()
-    df_cleaned.to_csv('rent_houses_washed2.csv', index=False)
+    df_cleaned.to_csv('rent.csv', index=False)
 
 
 if __name__ == '__main__':
