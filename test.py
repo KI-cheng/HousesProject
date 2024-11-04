@@ -5,7 +5,7 @@ from prediction import HouseDataset, PricePredictor
 from tabulate import tabulate
 
 
-def predict_prices(model_path='best_model1.pth', data_path='rent.csv', num_samples=10):
+def predict_prices(model_path='best_model1.pth', data_path='rent.csv', num_samples=50):
     df = pd.read_csv(data_path)
 
     sample_df = df.sample(n=num_samples, random_state=np.random.randint(1, 100000))
@@ -31,6 +31,7 @@ def predict_prices(model_path='best_model1.pth', data_path='rent.csv', num_sampl
         '建筑面积': sample_df['built_area(ft.)'].values,
         '实际价格': actual_prices,
         '预测价格': predictions,
+        '差值': actual_prices-predictions,
     })
     print(tabulate(results_df, headers='keys', tablefmt='pretty', floatfmt='.2f'))
 

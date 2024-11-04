@@ -96,7 +96,7 @@ class PricePredictor(nn.Module):  # 总共8个特征，第一层8*16=128放大�
 
 
 class Loss(nn.Module):
-    def __init__(self, penalty_weight=0.5):  # Increased base penalty weight
+    def __init__(self, penalty_weight=0.45):  # 略微提高基础惩罚权重
         super().__init__()
         self.penalty_weight = penalty_weight
 
@@ -104,42 +104,91 @@ class Loss(nn.Module):
         pred = pred.squeeze()
         target = target.squeeze()
 
-        # Base MSE loss
+        # 基础MSE损失
         base_loss = F.mse_loss(pred, target)
 
-        # Calculate relative error
+        # 计算相对误差
         relative_error = torch.abs(pred - target) / target
 
-        # Price range specific penalties
-        # Stronger penalty for mid-range prices (15000-25000)
-        mid_range_mask = (target >= 15000) & (target <= 25000)
-        mid_range_error = relative_error[mid_range_mask]
-        mid_range_penalty = torch.mean(torch.square(mid_range_error)) * self.penalty_weight * 2.0 if len(
-            mid_range_error) > 0 else 0
+        # 地区价值判断
+        def get_location_value(price_per_area):
+            # 根据单价判断地区价值
+            high_value = price_per_area > 45  # 每平方尺45以上视为高价值区域
+            medium_value = (price_per_area > 35) & (price_per_area <= 45)
+            return high_value, medium_value
 
-        # Very strong penalty for severe underestimation
-        underestimation_mask = pred < (target * 0.7)  # For predictions below 70% of actual
-        underestimation_error = relative_error[underestimation_mask]
-        underestimation_penalty = torch.mean(torch.square(underestimation_error)) * self.penalty_weight * 3.0 if len(
-            underestimation_error) > 0 else 0
+        # 计算每平方尺价格
+        price_per_area = target / target  # 这里应该用实际面积，需要从数据集传入
 
-        # Regular range penalties
-        low_price_mask = target < 15000
-        low_price_error = relative_error[low_price_mask]
-        low_price_penalty = torch.mean(torch.square(low_price_error)) * self.penalty_weight * 1.5 if len(
-            low_price_error) > 0 else 0
+        # 地区价值掩码
+        high_value_mask, medium_value_mask = get_location_value(price_per_area)
 
-        high_price_mask = target > 25000
-        high_price_error = relative_error[high_price_mask]
-        high_price_penalty = torch.mean(torch.square(high_price_error)) * self.penalty_weight if len(
-            high_price_error) > 0 else 0
+        # 市区房产特殊处理
+        def urban_property_penalty(pred, target):
+            urban_mask = high_value_mask | medium_value_mask
+            if not torch.any(urban_mask):
+                return 0
 
-        total_penalty = mid_range_penalty + underestimation_penalty + low_price_penalty + high_price_penalty
+            urban_error = relative_error[urban_mask]
+            # 对低估进行更强的惩罚
+            underestimation_mask = pred[urban_mask] < target[urban_mask]
+            urban_penalty = torch.where(
+                underestimation_mask,
+                urban_error * 3.0,  # 低估惩罚
+                urban_error * 1.5  # 高估惩罚
+            )
+            return torch.mean(torch.square(urban_penalty)) * self.penalty_weight
+
+        # 价格区间惩罚
+        def range_penalty(lower, upper, weight):
+            mask = (target >= lower) & (target < upper)
+            if not torch.any(mask):
+                return 0
+
+            range_error = relative_error[mask]
+            return torch.mean(torch.square(range_error)) * self.penalty_weight * weight
+
+        # 价格区间定义
+        ranges = [
+            (0, 15000, 1.8),  # 低价
+            (15000, 20000, 2.5),  # 中价（重点关注）
+            (20000, 30000, 2.2),  # 中高价
+            (30000, float('inf'), 2.0)  # 高价
+        ]
+
+        # 低估保护
+        def underestimation_protection(pred, target):
+            mask = pred < (target * 0.9)  # 低估超过10%
+            if not torch.any(mask):
+                return 0
+
+            under_error = relative_error[mask]
+            return torch.mean(torch.square(under_error)) * self.penalty_weight * 2.8
+
+        # 面积影响调整
+        def area_adjustment(pred, target, actual_area):  # 需要从数据集传入实际面积
+            large_area_mask = actual_area > 800
+            if not torch.any(large_area_mask):
+                return 0
+
+            area_error = relative_error[large_area_mask]
+            return torch.mean(torch.square(area_error)) * self.penalty_weight * 1.5
+
+        # 计算总惩罚
+        range_penalties = sum(range_penalty(lower, upper, weight)
+                              for lower, upper, weight in ranges)
+
+        total_penalty = (
+                urban_property_penalty(pred, target) +
+                range_penalties +
+                underestimation_protection(pred, target) +
+                area_adjustment(pred, target, target)  # 实际面积需要从数据集传入
+        )
 
         return base_loss + total_penalty
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=150, patience=10):
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=160, patience=10):
     # model 神经网络模型
     # train_loader 训练数据加载器
     # val_loader 验证数据加载器
@@ -235,7 +284,7 @@ def main():
     # 定义损失函数和优化器
     criterion = Loss(penalty_weight=0.4)
     # 使用Adam添加L2正则化防止过拟合
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0008, weight_decay=1e-5)
 
     # 训练模型
     train_model(model, train_loader, val_loader, criterion, optimizer)
