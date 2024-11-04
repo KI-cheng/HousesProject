@@ -5,7 +5,7 @@ from prediction import HouseDataset, PricePredictor
 from tabulate import tabulate
 
 
-def predict_prices(model_path='best_model1.pth', data_path='rent.csv', num_samples=5):
+def predict_prices(model_path='best_model1.pth', data_path='rent.csv', num_samples=10):
     df = pd.read_csv(data_path)
 
     sample_df = df.sample(n=num_samples, random_state=np.random.randint(1, 100000))

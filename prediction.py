@@ -95,40 +95,46 @@ class PricePredictor(nn.Module):  # 总共8个特征，第一层8*16=128放大�
         return x
 
 
-class Loss(nn.Module):  # 定义一个损失函数，根据预测值调整权重
-    def __init__(self, penalty_weight=0.4):
+class Loss(nn.Module):
+    def __init__(self, penalty_weight=0.5):  # Increased base penalty weight
         super().__init__()
-        # self.threshold = threshold
         self.penalty_weight = penalty_weight
 
-    def forward(self, pred, target):  # 使用了
+    def forward(self, pred, target):
         pred = pred.squeeze()
         target = target.squeeze()
 
-        # 基础MSE损失(均方误差)
+        # Base MSE loss
         base_loss = F.mse_loss(pred, target)
-        # 计算相对误差（百分比）
+
+        # Calculate relative error
         relative_error = torch.abs(pred - target) / target
 
-        # 分段惩罚
-        # 对(<=15000)的误差加大惩罚
-        low_price_mask = target <= 15000
+        # Price range specific penalties
+        # Stronger penalty for mid-range prices (15000-25000)
+        mid_range_mask = (target >= 15000) & (target <= 25000)
+        mid_range_error = relative_error[mid_range_mask]
+        mid_range_penalty = torch.mean(torch.square(mid_range_error)) * self.penalty_weight * 2.0 if len(
+            mid_range_error) > 0 else 0
+
+        # Very strong penalty for severe underestimation
+        underestimation_mask = pred < (target * 0.7)  # For predictions below 70% of actual
+        underestimation_error = relative_error[underestimation_mask]
+        underestimation_penalty = torch.mean(torch.square(underestimation_error)) * self.penalty_weight * 3.0 if len(
+            underestimation_error) > 0 else 0
+
+        # Regular range penalties
+        low_price_mask = target < 15000
         low_price_error = relative_error[low_price_mask]
-        low_price_penalty = torch.mean(torch.square(low_price_error)) * self.penalty_weight * 2.8 if len(
+        low_price_penalty = torch.mean(torch.square(low_price_error)) * self.penalty_weight * 1.5 if len(
             low_price_error) > 0 else 0
-        # 对(15000-30000)的误差惩罚
-        mid_price_mask = (target > 15000) & (target <= 30000)
-        mid_price_error = relative_error[mid_price_mask]
-        mid_price_penalty = torch.mean(torch.square(mid_price_error)) * self.penalty_weight if len(
-            mid_price_error) > 0 else 0
-        # 对(>30000)的误差惩罚
-        high_price_mask = target > 30000
+
+        high_price_mask = target > 25000
         high_price_error = relative_error[high_price_mask]
-        high_price_penalty = torch.mean(torch.square(high_price_error)) * self.penalty_weight * 0.5 if len(
+        high_price_penalty = torch.mean(torch.square(high_price_error)) * self.penalty_weight if len(
             high_price_error) > 0 else 0
 
-        # 总惩罚项
-        total_penalty = low_price_penalty + mid_price_penalty + high_price_penalty
+        total_penalty = mid_range_penalty + underestimation_penalty + low_price_penalty + high_price_penalty
 
         return base_loss + total_penalty
 
