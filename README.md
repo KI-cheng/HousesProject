@@ -10,7 +10,7 @@
 
 rent.csv是最新清洗过的数据， prediction.py用于模型训练， 想尝试自己分析的， 
 使用best_model1.pth进行分析。show.py是模型评估的可视化图表（简陋版）和区间总结（简陋版）可以自己跑一下。
-![img.png](img.png)
+![prediction_analysis.png](prediction_analysis.png)
 任务(大家认领一下)：
 
 1.了解代码中的各种评估参数，收集相关文献作为引用。
