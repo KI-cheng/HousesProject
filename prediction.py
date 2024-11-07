@@ -251,7 +251,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             best_val_loss = val_loss
             best_model_weights = model.state_dict().copy()
             early_stopping_counter = 0
-            torch.save(model.state_dict(), f'best_model1.pth')
+            torch.save(model.state_dict(), f'./static/model/best_model1.pth')
         else:
             early_stopping_counter += 1
             if early_stopping_counter >= patience:
@@ -265,7 +265,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
 
 def main():
     # 读取数据
-    df = pd.read_csv('rent.csv')  # 加载数据
+    df = pd.read_csv('./static/data/rent.csv')  # 加载数据
 
     # 划分训练集和验证集
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
@@ -292,7 +292,7 @@ def main():
     analyze_predictions(model, val_loader)
 
 
-def analyze_predictions(model, val_loader, path='best_model1.pth'):  # 查看具体预测效果
+def analyze_predictions(model, val_loader, path='./static/model/best_model1.pth'):  # 查看具体预测效果
     model.load_state_dict(torch.load(path, weights_only=True))
     model.eval()
     predictions = []

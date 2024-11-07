@@ -15,7 +15,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 def load_model_and_data():
     # 读取数据
-    df = pd.read_csv('rent.csv')
+    df = pd.read_csv('./static/data/rent.csv')
 
     # 划分训练集和验证集
     _, val_df = train_test_split(df, test_size=0.2, random_state=42)
@@ -25,7 +25,7 @@ def load_model_and_data():
     # 加载模型
     input_size = val_dataset.features.shape[1]
     model = PricePredictor(input_size)
-    model.load_state_dict(torch.load('best_model1.pth', weights_only=True))
+    model.load_state_dict(torch.load('./static/model/best_model1.pth', weights_only=True))
     model.eval()
 
     return model, val_loader, val_df
@@ -50,49 +50,56 @@ def plot_prediction_analysis():
     errors = predictions - targets
     relative_errors = (errors / targets) * 100
 
-    # 创建一个4x2的图表布局
-    plt.figure(figsize=(20, 24))
-
     # 1. 预测值vs实际值散点图
-    plt.subplot(4, 2, 1)
+    plt.figure(figsize=(10, 8))
     plt.scatter(targets, predictions, alpha=0.5)
     plt.plot([min(targets), max(targets)], [min(targets), max(targets)], 'r--')
     plt.xlabel('实际价格')
     plt.ylabel('预测价格')
     plt.title('预测值vs实际值对比')
+    plt.savefig('./static/images/1.png', dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 2. 误差分布直方图
-    plt.subplot(4, 2, 2)
+    plt.figure(figsize=(10, 8))
     plt.hist(errors, bins=50)
     plt.xlabel('预测误差')
     plt.ylabel('频率')
     plt.title('预测误差分布')
+    plt.savefig('./static/images/2.png', dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 3. 价格区间误差箱型图
-    plt.subplot(4, 2, 3)
+    plt.figure(figsize=(10, 8))
     price_ranges = pd.cut(targets, bins=[0, 15000, 30000, float('inf')],
                           labels=['低价(≤15k)', '中价(15k-30k)', '高价(>30k)'])
     error_df = pd.DataFrame({'价格区间': price_ranges, '相对误差(%)': relative_errors})
     sns.boxplot(x='价格区间', y='相对误差(%)', data=error_df)
     plt.title('不同价格区间的预测误差分布')
+    plt.savefig('./static/images/3.png', dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 4. 相对误差随价格变化趋势
-    plt.subplot(4, 2, 4)
+    plt.figure(figsize=(10, 8))
     plt.scatter(targets, relative_errors, alpha=0.5)
     plt.axhline(y=0, color='r', linestyle='--')
     plt.xlabel('实际价格')
     plt.ylabel('相对误差(%)')
     plt.title('相对误差随价格变化趋势')
+    plt.savefig('./static/images/4.png', dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 5. 各价格区间的平均绝对误差
-    plt.subplot(4, 2, 5)
+    plt.figure(figsize=(10, 8))
     mean_abs_errors = error_df.groupby('价格区间')['相对误差(%)'].apply(lambda x: np.mean(np.abs(x)))
     mean_abs_errors.plot(kind='bar')
     plt.title('各价格区间平均绝对误差')
     plt.ylabel('平均绝对误差(%)')
+    plt.savefig('./static/images/5.png', dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 6. 误差热图
-    plt.subplot(4, 2, 6)
+    plt.figure(figsize=(10, 8))
     price_bins = np.linspace(min(targets), max(targets), 20)
     error_bins = np.linspace(min(errors), max(errors), 20)
     plt.hist2d(targets, errors, bins=[price_bins, error_bins], cmap='YlOrRd')
@@ -100,9 +107,11 @@ def plot_prediction_analysis():
     plt.xlabel('实际价格')
     plt.ylabel('预测误差')
     plt.title('误差分布热图')
+    plt.savefig('./static/images/6.png', dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 7. 累积误差分布
-    plt.subplot(4, 2, 7)
+    plt.figure(figsize=(10, 8))
     sorted_abs_errors = np.sort(np.abs(relative_errors))
     cumulative = np.arange(1, len(sorted_abs_errors) + 1) / len(sorted_abs_errors)
     plt.plot(sorted_abs_errors, cumulative)
@@ -110,9 +119,11 @@ def plot_prediction_analysis():
     plt.ylabel('累积比例')
     plt.title('累积误差分布')
     plt.grid(True)
+    plt.savefig('./static/images/7.png', dpi=300, bbox_inches='tight')
+    plt.close()
 
     # 8. 预测准确度区间统计
-    plt.subplot(4, 2, 8)
+    plt.figure(figsize=(10, 8))
     accuracy_ranges = [0, 5, 10, 15, 20, float('inf')]
     accuracy_labels = ['0-5%', '5-10%', '10-15%', '15-20%', '>20%']
     abs_relative_errors = np.abs(relative_errors)
@@ -121,10 +132,7 @@ def plot_prediction_analysis():
     plt.title('预测准确度分布')
     plt.xlabel('相对误差范围')
     plt.ylabel('样本数量')
-
-    # 调整布局并保存
-    plt.tight_layout()
-    plt.savefig('prediction_analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('./static/images/8.png', dpi=300, bbox_inches='tight')
     plt.close()
 
 

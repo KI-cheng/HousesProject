@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>House Renting Prediction</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="The Estate Template">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css"
+	      href="{{ url_for('static', filename='styles/bootstrap4/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css"
+	      href="{{ url_for('static', filename='plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main_styles.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/responsive.css') }}">
+	<style>
+        .slider-container {
+            margin: 20px;
+        }
+
+        .slider-value {
+            margin-left: 10px;
+        }
+	</style>
+</head>
+
+<body>
+
+<div class="super_container">
+
+	<!-- Home -->
+	<div class="home">
+
+		<!-- Home Slider -->
+		<div class="home_slider_container">
+			<div class="owl-carousel owl-theme home_slider">
+
+				<!-- Home Slider Item -->
+				<div class="owl-item home_slider_item">
+					<!-- Image by https://unsplash.com/@aahubs -->
+					<div class="home_slider_background"></div>
+					<div class="home_slider_content_container text-center">
+						<div class="home_slider_content">
+							<h1 data-animation-in="flipInX" data-animation-out="animate-out fadeOut">Predict in the best
+								model</h1>
+						</div>
+					</div>
+				</div>
+
+				<!-- Home Slider Item -->
+				<div class="owl-item home_slider_item">
+					<!-- Image by https://unsplash.com/@aahubs -->
+					<div class="home_slider_background"></div>
+					<div class="home_slider_content_container text-center">
+						<div class="home_slider_content">
+							<h1 data-animation-in="flipInX" data-animation-out="animate-out fadeOut">Trust us</h1>
+						</div>
+					</div>
+				</div>
+
+				<!-- Home Slider Item -->
+				<div class="owl-item home_slider_item">
+					<!-- Image by https://unsplash.com/@aahubs -->
+					<div class="home_slider_background"></div>
+					<div class="home_slider_content_container text-center">
+						<div class="home_slider_content">
+							<h1 data-animation-in="flipInX" data-animation-out="animate-out fadeOut">find your home</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- Header -->
+
+	<header class="header trans_300">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="header_container d-flex flex-row align-items-center trans_300">
+
+						<!-- Logo -->
+
+						<div class="logo_container">
+							<a href="#">
+								<div class="logo">
+									<img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+									<span>Matrix</span>
+								</div>
+							</a>
+						</div>
+
+						<!-- Main Navigation -->
+
+						<nav class="main_nav">
+							<ul class="main_nav_list">
+								<li class="main_nav_item"><a href="#">prediction</a></li>
+								<li class="main_nav_item"><a href="#">about</a></li>
+							</ul>
+						</nav>
+
+						<!-- Phone Home -->
+
+						<div class="phone_home text-center">
+							<span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+						</div>
+
+						<!-- Hamburger -->
+
+						<div class="hamburger_container menu_mm">
+							<div class="hamburger menu_mm">
+								<i class="fas fa-bars trans_200 menu_mm"></i>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Menu -->
+
+		<div class="menu menu_mm">
+			<ul class="menu_list">
+				<li class="menu_item">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+								<a href="#">home</a>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="menu_item">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+								<a href="about.html">about us</a>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="menu_item">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="menu_item">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="menu_item">
+					<div class="container">
+						<div class="row">
+							<div class="col">
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+	</header>
+
+	<!-- Search Box -->
+
+	<div class="search_box">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+
+					<div class="search_box_outer">
+						<div class="search_box_inner" style="border-radius: 10px">
+
+
+							<!-- Search Arrow -->
+							<div class="search_arrow_box">
+								<div class="search_arrow_box_inner">
+									<div class="search_arrow_circle d-flex flex-column align-items-center justify-content-center">
+										<span>Search it here</span></div>
+									<img src="{{ url_for('static', filename='images/search_arrow.png') }}" alt="">
+								</div>
+							</div>
+
+							<!-- Search Form -->
+							<form class="search_form" action="/static" method="POST" id="summit_form">
+								<div class="search_box_container">
+									<ul class="dropdown_row clearfix">
+										<li class="dropdown_item dropdown_item_5" style="visibility: hidden">
+											<div class="dropdown_item_title">regions</div>
+											<select name="regions" id="regions" class="dropdown_item_select">
+												<option>Any</option>
+
+											</select>
+										</li>
+										<li class="dropdown_item dropdown_item_5">
+											<div class="dropdown_item_title">Sample Size</div>
+											<input type="text" name="sample_size" id="sample_size"
+											       class="dropdown_item_input" placeholder="Input a number" autocomplete="off">
+										</li>
+										<li class="dropdown_item dropdown_item_5" style="visibility: hidden">
+											<div class="dropdown_item_title">Actual Area</div>
+											<select name="actual_area" id="actual_area" class="dropdown_item_select">
+												<option>Any</option>
+
+											</select>
+										</li>
+										<li class="dropdown_item dropdown_item_5" style="visibility: hidden">
+											<div class="dropdown_item_title">Actual Price</div>
+											<select name="actual_price" id="actual_price" class="dropdown_item_select">
+												<option>Any</option>
+
+											</select>
+										</li>
+										<li class="dropdown_item">
+											<div class="search_button">
+												<input value="predict" type="submit" class="search_submit_button">
+											</div>
+										</li>
+									</ul>
+								</div>
+							</form>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="testimonials" style="display: none;">
+		<div class="testimonials_background_container prlx_parent">
+			<div class="testimonials_background prlx"
+			     style="background-image:url(../static/images/testimonials_background.jpg)"></div>
+		</div>
+		<div class="container">
+
+			<div class="row">
+				<div class="col">
+					<div class="section_title text-center">
+						<h3>Prediction Sample</h3>
+						<span class="section_subtitle">&nbsp;</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 col-lg-11 mx-auto" id="table_div">
+					<table style="width: 100%; border-collapse: collapse; text-align: center;">
+						<thead>
+						<tr>
+							{% for column in predict_prices.columns %}
+							<th style="padding: 8px; background-color: #f2f2f2; border-bottom: 1px solid #ddd;">{{
+								column }}
+							</th>
+							{% endfor %}
+						</tr>
+						</thead>
+						<tbody class="datatable1">
+						{% for index, row in predict_prices.iterrows() %}
+						<tr>
+							{% for cell in row %}
+							<td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ cell }}</td>
+							{% endfor %}
+						</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='styles/bootstrap.min.css') }}"></script>
+<script src="{{ url_for('static', filename='plugins/scrollmagic/ScrollMagic.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/easing/easing.js') }}"></script>
+<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+<script>
+    // 为按钮点击事件绑定一个函数
+    $('.search_submit_button').click(function () {
+        // 切换 Div 的可见性
+        $('.testimonials').css('display', 'block')
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.search_form').on('submit', function (e) {
+            e.preventDefault(); // 阻止表单默认提交行为
+
+            // 通过 serialize() 方法获取表单数据
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: '/query',  // Flask路由地址
+                type: 'POST',
+                data: formData, // 发送表单数据
+                dataType: 'json',
+                success: function (response) {
+                    // 清空表格内容
+                    $('.datatable1').empty();
+
+                    // 更新表格数据
+                    response.data.forEach(function (row) {
+                        var tr = $('<tr>');
+                        row.forEach(function (cell) {
+                            tr.append($('<td>').text(cell).css({
+                                'padding': '8px',
+                                'border-bottom': '1px solid #ddd'
+                            }));
+                        });
+                        $('.datatable1').append(tr);
+                    });
+                    setTimeout(function () {
+                        $('html, body').animate({
+                            scrollTop: $(".testimonials").offset().top - 50
+                        }, 800);
+                    }, 100);
+                },
+                error: function (xhr, status, error) {
+                    console.error('查询失败:', error);
+                    alert('查询失败，请重试');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>
