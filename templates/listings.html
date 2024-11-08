@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>The Estate - Listings</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="The Estate Teplate">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css"
+	      href="{{ url_for('static', filename='styles/bootstrap4/bootstrap.min.css') }}">
+	<link href="{{ url_for('static', filename='plugins/fontawesome-free-5.0.1/css/fontawesome-all.css') }}"
+	      rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/listings_styles.css') }}">
+	<link rel="stylesheet" type="text/css"
+	      href="{{ url_for('static', filename='styles/listings_responsive.css') }}">
+
+	<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const header = document.querySelector('header');
+            let lastScrollY = window.scrollY;
+            let isHeaderVisible = true;
+
+            // 只添加必要的内联样式，保持其他CSS不变
+            header.style.transition = 'transform 0.3s ease-in-out';
+
+            // 检查header是否已经有position: fixed
+            const headerStyle = window.getComputedStyle(header);
+            if (headerStyle.position !== 'fixed') {
+                header.style.position = 'fixed';
+                header.style.top = '0';
+                header.style.left = '0';
+                header.style.width = '100%';
+            }
+
+            function handleScroll() {
+                const currentScrollY = window.scrollY;
+
+                if (currentScrollY > lastScrollY && currentScrollY > 80) {
+                    // 向下滚动且不在顶部，隐藏header
+                    if (isHeaderVisible) {
+                        header.style.transform = 'translateY(-100%)';
+                        isHeaderVisible = false;
+                    }
+                } else {
+                    // 向上滚动或在顶部，显示header
+                    if (!isHeaderVisible && currentScrollY <= 80) {
+                        header.style.transform = 'translateY(0)';
+                        isHeaderVisible = true;
+                    }
+                }
+
+                lastScrollY = currentScrollY;
+            }
+
+            // 使用RequestAnimationFrame优化滚动性能
+            let ticking = false;
+            window.addEventListener('scroll', function () {
+                if (!ticking) {
+                    window.requestAnimationFrame(function () {
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, {passive: true});
+
+            // 初始化时调用一次
+            handleScroll();
+        });
+	</script>
+</head>
+
+<body>
+
+<div class="super_container">
+
+	<!-- Home -->
+	<div class="home">
+
+		<div class="home_background"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="home_content">
+						<div class="home_title">
+							<h2>Visualization and Analysis</h2>
+						</div>
+						<div class="breadcrumbs">
+							<span><a href="#">Cheng Zhenkai</a></span>
+							<span><a href="#">He Peilin</a></span>
+							<span><a href="#">Zhong Cheng</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Header -->
+
+<    <!-- Header -->
+
+<header class="header trans_300">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="header_container d-flex flex-row align-items-center trans_300">
+
+					<!-- Logo -->
+
+					<div class="logo_container">
+						<a href="#">
+							<div class="logo">
+								<img src="images/logo.png" alt="">
+								<span>matrix</span>
+							</div>
+						</a>
+					</div>
+
+					<!-- Main Navigation -->
+
+					<nav class="main_nav">
+						<ul class="main_nav_list">
+							<li class="main_nav_item"><a href="/">prediction</a></li>
+							<li class="main_nav_item"><a href="#">visualization</a></li>
+						</ul>
+					</nav>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+<!-- Listings -->
+<div class="intro" style="margin-top: 5%;">
+	<div class="container">
+		<div class="row" style="justify-content: center">
+			<div class="col-6 col-lg-6">
+				<div class="intro_image">
+					<img src="images/structure.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+			<div class="col-6 order-lg-2 order-1">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/1.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/2.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/3.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/4.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/5.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/6.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/7.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="intro" style="margin-top: 3%;">
+	<div class="container">
+		<div class="row">
+			<div class="col-4 col-lg-4">
+				<div class="intro_image">
+					<img src="images/8.png" alt="" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+			<div class="col-8 col-lg-8">
+				<h2 class="intro_title">DDN structure diagram</h2>
+				<div class="intro_subtitle">Design by mAtrIx</div>
+				<p class="intro_text">We designed a salary prediction neural network structure that starts
+					with 8 features from the input and processes them layer by layer through three hidden
+					layers (128, 64, and 32 neurons), each containing three components: a fully connected
+					layer, a batch normalization, and a RELU activation function, with regularization to
+					prevent overfitting using dropout between the layers, and ultimately outputting 1
+					predicted value.</p>
+				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+</body>
+
+<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/scrollmagic/ScrollMagic.min.js') }}"></script>
+<script src="{{ url_for('static', filename='styles/bootstrap4/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/easing/easing.js') }}"></script>
+
+
+</html>

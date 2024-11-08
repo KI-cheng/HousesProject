@@ -38,5 +38,10 @@ def query():
     })
 
 
+@app.route('/charts', methods=['GET', 'POST'])
+def chart():
+    return render_template('listings.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
