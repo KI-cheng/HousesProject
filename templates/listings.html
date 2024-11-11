@@ -89,6 +89,8 @@
 							<span><a href="#">Cheng Zhenkai</a></span>
 							<span><a href="#">He Peilin</a></span>
 							<span><a href="#">Zhong Cheng</a></span>
+							<span><a href="#">Xu Xin</a></span>
+							<span><a href="#">Chen Zhenyu</a></span>
 						</div>
 					</div>
 				</div>
@@ -147,12 +149,16 @@
 			<div class="col-6 order-lg-2 order-1">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">This flowchart shows the architecture of a deep neural network (DNN)
+					for predicting a continuous value. Its structure and data flow from left to right. First
+					Hidden Layer contains 128 neurons, and the Batch Normalization is for accelerate the
+					training process of the network and improve the stability of the model to prevent problems
+					such as disappearing gradients or explosions. Dropout technology is applied before passing
+					on to the next hidden layer. This is a regularization method that randomly drops some neurons
+					to prevent the model from overfitting. The Second Hidden Layer contains 64 neurons, further
+					extract and process the features learned in the previous layer.The Second Hidden Layer contains
+					32 neurons which are ready for compression and refining feature representation.The output layer
+					consists of one neuron that outputs the final predicted house price.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 
@@ -165,12 +171,15 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">Most of the blue dots are close to the red dotted line, especially in the
+					20,000 to 60,000 price range, indicating that the model is more accurate in this range.
+					However, in the higher price range (over 60,000), some blue dots can be seen to deviate from
+					the red dotted line, indicating that the model has a certain error in the prediction of
+					high-priced properties, perhaps due to the lack of high-priced housing data, or the model's
+					insufficient generalization ability on high-priced housing data.
+					Overall, the points in the graph show a positive linear trend, that is, as the actual house
+					price increases, the predicted house price of the model also increases, which means that the
+					model is basically able to capture the overall change trend of house price.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 			<div class="col-4 col-lg-4">
@@ -192,12 +201,25 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">Concentrated distribution of errors:
+					As can be seen from the figure, most of the prediction errors are concentrated around
+					0, especially in the range from -2000 to 2000, indicating that the prediction errors
+					of the model are mostly small, and the model is more accurate in predicting the price
+					of most real estate.
+					The shape of the error distribution:
+					The errors appear to be close to a normal distribution (bell curve), most of the
+					prediction errors are concentrated in the center, indicating that the model's predictions
+					are basically accurate, and only a few prediction errors are large.
+					Left-right deviation:
+					The negative error (left) means that the model underestimates real house prices, and
+					the positive error (right) means that the model overestimates house prices.
+					As can be seen from the graph, the distribution of errors is slightly more in the
+					negative (underestimation) region than in the positive (overestimation) region, which
+					may mean that the model is more inclined to underestimate house prices.
+					Special Error:
+					There are fewer data points with large errors in the -8000 to -4000 and 2000 to 4000
+					ranges, indicating that the model may occasionally have large forecast errors in extreme
+					cases (such as high - or low-priced properties), but these cases are less common.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 
@@ -210,12 +232,11 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">It shows the model's forecast error distribution across three price ranges (low,
+					mid-price, and high price), The forecast error distribution of low price houses is wide , the error
+					is large, and there are many outliers (high error). The median price house has a smaller error, but
+					there are still some outliers with unusually high errors. The error of high-priced houses is the
+					smallest, the distribution is more concentrated, and the overall forecast is more accurate.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 			<div class="col-4 col-lg-4">
@@ -237,12 +258,10 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">Low-priced rooms (<20,000) : The error fluctuates greatly and the model tends to
+					overestimate. Medium and high-priced homes (>20,000) : The error is relatively small and more
+					concentrated, and the forecast is more accurate. The general trend is that with the increase of
+					housing prices, the forecast error gradually decreases and tends to be stable.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 		</div>
@@ -254,12 +273,11 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">The chart shows the average absolute error for different price ranges: low-priced
+					homes (≤15k) have the highest average error of about 6%, and mid-priced homes (15K-30K) have the
+					lowest average error of about 3%. The average error for higher-priced homes (>30k) is somewhere in
+					between, about 5%. Conclusion: The prediction of the model is the most accurate in the middle price
+					house, and the error is the largest in the low price house.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 			<div class="col-4 col-lg-4">
@@ -281,12 +299,10 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">This graph is a heat map of the error distribution, showing the distribution of
+					the forecast error with the actual house price, Most of the errors are concentrated in the range of
+					15,000-25,000 real house prices, and the error is close to 0, indicating that the model's prediction
+					is more accurate in this range.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 
@@ -299,12 +315,9 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">This cumulative error distribution chart shows that about 90% of house price
+					forecasts are within 10%, indicating that the model as a whole has a high forecast accuracy, and the
+					vast majority of data has a small error.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 			<div class="col-4 col-lg-4">
@@ -326,12 +339,9 @@
 			<div class="col-8 col-lg-8">
 				<h2 class="intro_title">DDN structure diagram</h2>
 				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">We designed a salary prediction neural network structure that starts
-					with 8 features from the input and processes them layer by layer through three hidden
-					layers (128, 64, and 32 neurons), each containing three components: a fully connected
-					layer, a batch normalization, and a RELU activation function, with regularization to
-					prevent overfitting using dropout between the layers, and ultimately outputting 1
-					predicted value.</p>
+				<p class="intro_text">This graph shows the distribution of prediction accuracy of the model, where the
+					relative error of most samples is between 0 and 5%, showing that the model's prediction of most
+					house prices is very accurate, and the error of more than 10% is very rare.</p>
 				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 			</div>
 
