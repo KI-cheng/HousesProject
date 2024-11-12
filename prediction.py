@@ -69,7 +69,7 @@ class HouseDataset(Dataset):
         return self.features[idx], self.labels[idx]
 
 
-class PricePredictor(nn.Module):  # 总共8个特征，第一层8*16=128放大特征
+class PricePredictor(nn.Module):  # 总共8个特征，第一层128放大特征
     def __init__(self, input_size):
         super().__init__()
         # 定义每一层
@@ -96,7 +96,7 @@ class PricePredictor(nn.Module):  # 总共8个特征，第一层8*16=128放大�
 
 
 class Loss(nn.Module):
-    def __init__(self, penalty_weight=0.45):  # 略微提高基础惩罚权重
+    def __init__(self, penalty_weight=0.45):
         super().__init__()
         self.penalty_weight = penalty_weight
 
@@ -288,7 +288,6 @@ def main():
 
     # 训练模型
     train_model(model, train_loader, val_loader, criterion, optimizer)
-
     analyze_predictions(model, val_loader)
 
 
@@ -306,7 +305,6 @@ def analyze_predictions(model, val_loader, path='./static/model/best_model1.pth'
 
     # 计算R²分数
     # R² = 1 - (预测误差平方和 / 总变差平方和)
-    # 转为numpy数组
     np_predictions = np.array(predictions)
     np_targets = np.array(targets)
     numerator = np.sum((np_targets - np_predictions) ** 2)

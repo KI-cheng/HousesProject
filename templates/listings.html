@@ -149,16 +149,11 @@
 						</div>
 					</div>
 					<div class="col-6 order-lg-2 order-1">
-						<h2 class="intro_title">DNN Structure Diagram</h2>
+						<h2 class="intro_title">MLP Structure Diagram</h2>
 						<div class="intro_subtitle">Design by mAtrIx</div>
-						<p class="intro_text">This figure shows the structure of a neural network, specifically a fully
-							connected feedforward neural network. The network is divided into three main parts from left
-							to right:</p>
+						<p class="intro_text">This figure shows the structure of our prediction methods.</p>
 							<p class="intro_text">1. Input layer: receives input of 8 features.</p>
-							<p class="intro_text">2. Hidden layer: consists of three fully connected layers, each followed by a Batch Normal
-							layer and a ReLU activation function. The first hidden layer has 128 neurons, the second has
-							64, and the third has 32. After each hidden layer, there is a dropout layer to reduce
-							overfitting.</p>
+							<p class="intro_text">2. Hidden layer: 128->64->32->1</p>
 							<p class="intro_text">3. Output layer: Finally output a value.
 							The forward propagation of the network starts from the input layer, goes through the hidden
 							layer processing, and finally reaches the output layer. Back propagation is used to adjust
