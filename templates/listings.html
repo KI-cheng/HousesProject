@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<title>House Renting Prediction</title>
 	<meta charset="utf-8">
@@ -7,347 +8,457 @@
 	<meta name="description" content="The Estate Teplate">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css"
-	      href="{{ url_for('static', filename='styles/bootstrap4/bootstrap.min.css') }}">
+		href="{{ url_for('static', filename='styles/bootstrap4/bootstrap.min.css') }}">
 	<link href="{{ url_for('static', filename='plugins/fontawesome-free-5.0.1/css/fontawesome-all.css') }}"
-	      rel="stylesheet" type="text/css">
+		rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/listings_styles.css') }}">
-	<link rel="stylesheet" type="text/css"
-	      href="{{ url_for('static', filename='styles/listings_responsive.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/listings_responsive.css') }}">
 
 	<script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const header = document.querySelector('header');
-            let lastScrollY = window.scrollY;
-            let isHeaderVisible = true;
+		document.addEventListener('DOMContentLoaded', function () {
+			const header = document.querySelector('header');
+			let lastScrollY = window.scrollY;
+			let isHeaderVisible = true;
 
-            // 只添加必要的内联样式，保持其他CSS不变
-            header.style.transition = 'transform 0.3s ease-in-out';
+			// Only add necessary inline styles and keep other CSS unchanged
+			header.style.transition = 'transform 0.3s ease-in-out';
 
-            // 检查header是否已经有position: fixed
-            const headerStyle = window.getComputedStyle(header);
-            if (headerStyle.position !== 'fixed') {
-                header.style.position = 'fixed';
-                header.style.top = '0';
-                header.style.left = '0';
-                header.style.width = '100%';
-            }
+			// Check if the header already has position: fixed
+			const headerStyle = window.getComputedStyle(header);
+			if (headerStyle.position !== 'fixed') {
+				header.style.position = 'fixed';
+				header.style.top = '0';
+				header.style.left = '0';
+				header.style.width = '100%';
+			}
 
-            function handleScroll() {
-                const currentScrollY = window.scrollY;
+			function handleScroll() {
+				const currentScrollY = window.scrollY;
 
-                if (currentScrollY > lastScrollY && currentScrollY > 80) {
-                    // 向下滚动且不在顶部，隐藏header
-                    if (isHeaderVisible) {
-                        header.style.transform = 'translateY(-100%)';
-                        isHeaderVisible = false;
-                    }
-                } else {
-                    // 向上滚动或在顶部，显示header
-                    if (!isHeaderVisible && currentScrollY <= 80) {
-                        header.style.transform = 'translateY(0)';
-                        isHeaderVisible = true;
-                    }
-                }
+				if (currentScrollY > lastScrollY && currentScrollY > 80) {
+					// Scroll down and not at the top, hide the header
+					if (isHeaderVisible) {
+						header.style.transform = 'translateY(-100%)';
+						isHeaderVisible = false;
+					}
+				} else {
+					// Scroll up or at the top to display the header
+					if (!isHeaderVisible && currentScrollY <= 80) {
+						header.style.transform = 'translateY(0)';
+						isHeaderVisible = true;
+					}
+				}
 
-                lastScrollY = currentScrollY;
-            }
+				lastScrollY = currentScrollY;
+			}
 
-            // 使用RequestAnimationFrame优化滚动性能
-            let ticking = false;
-            window.addEventListener('scroll', function () {
-                if (!ticking) {
-                    window.requestAnimationFrame(function () {
-                        handleScroll();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }, {passive: true});
+			// Optimize scrolling performance using RequestAnimationFrame
+			let ticking = false;
+			window.addEventListener('scroll', function () {
+				if (!ticking) {
+					window.requestAnimationFrame(function () {
+						handleScroll();
+						ticking = false;
+					});
+					ticking = true;
+				}
+			}, {
+				passive: true
+			});
 
-            // 初始化时调用一次
-            handleScroll();
-        });
+			// Call once during initialization
+			handleScroll();
+		});
 	</script>
 </head>
 
 <body>
 
-<div class="super_container">
+	<div class="super_container">
 
-	<!-- Home -->
-	<div class="home">
+		<!-- Home -->
+		<div class="home">
 
-		<div class="home_background"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<div class="home_content">
-						<div class="home_title">
-							<h2>Visualization and Analysis</h2>
-						</div>
-						<div class="breadcrumbs">
-							<span><a href="#">Cheng Zhenkai</a></span>
-							<span><a href="#">He Peilin</a></span>
-							<span><a href="#">Zhong Cheng</a></span>
-							<span><a href="#">Xu Xin</a></span>
-							<span><a href="#">Chen Zhenyu</a></span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Header -->
-
-<    <!-- Header -->
-
-<header class="header trans_300">
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<div class="header_container d-flex flex-row align-items-center trans_300">
-
-					<!-- Logo -->
-
-					<div class="logo_container">
-						<a href="#">
-							<div class="logo">
-								<img src="images/logo.png" alt="">
-								<span>matrix</span>
+			<div class="home_background"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="home_content">
+							<div class="home_title">
+								<h2>Visualization and Analysis</h2>
 							</div>
-						</a>
+							<div class="breadcrumbs">
+								<span><a href="#">Cheng Zhenkai</a></span>
+								<span><a href="#">He Peilin</a></span>
+								<span><a href="#">Zhong Cheng</a></span>
+								<span><a href="#">Xu Xin</a></span>
+								<span><a href="#">Chen Zhenyu</a></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Header -->
+
+	< <!-- Header -->
+
+		<header class="header trans_300">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="header_container d-flex flex-row align-items-center trans_300">
+
+							<!-- Logo -->
+
+							<div class="logo_container">
+								<a href="#">
+									<div class="logo">
+										<img src="images/logo.png" alt="">
+										<span>matrix</span>
+									</div>
+								</a>
+							</div>
+
+							<!-- Main Navigation -->
+
+							<nav class="main_nav">
+								<ul class="main_nav_list">
+									<li class="main_nav_item"><a href="/">prediction</a></li>
+									<li class="main_nav_item"><a href="#">visualization</a></li>
+								</ul>
+							</nav>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+
+		<!-- Listings -->
+		<div class="intro" style="margin-top: 5%;">
+			<div class="container">
+				<div class="row" style="justify-content: center">
+					<div class="col-6 col-lg-6">
+						<div class="intro_image">
+							<img src="images/network.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+					<div class="col-6 order-lg-2 order-1">
+						<h2 class="intro_title">DNN Structure Diagram</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">This figure shows the structure of a neural network, specifically a fully
+							connected feedforward neural network. The network is divided into three main parts from left
+							to right:</p>
+							<p class="intro_text">1. Input layer: receives input of 8 features.</p>
+							<p class="intro_text">2. Hidden layer: consists of three fully connected layers, each followed by a Batch Normal
+							layer and a ReLU activation function. The first hidden layer has 128 neurons, the second has
+							64, and the third has 32. After each hidden layer, there is a dropout layer to reduce
+							overfitting.</p>
+							<p class="intro_text">3. Output layer: Finally output a value.
+							The forward propagation of the network starts from the input layer, goes through the hidden
+							layer processing, and finally reaches the output layer. Back propagation is used to adjust
+							the weight of the network during training. The legend illustrates the network components
+							represented by different colors and shapes: white rectangles represent fully connected
+							layers, light blue represents batch normalization layers, and red represents ReLU activation
+							functions.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
 					</div>
 
-					<!-- Main Navigation -->
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Scatter Plot of Predicted Values vs Actual Values</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">Most of the blue dots are close to the red dotted line, especially in the
+							20,000 to 60,000 price range, indicating that the model is more accurate in this range.
+							However, in the higher price range (over 60,000), some blue dots can be seen to deviate from
+							the red dotted line, indicating that the model has a certain error in the prediction of
+							high-priced properties, perhaps due to the lack of high-priced housing data, or the model's
+							insufficient generalization ability on high-priced housing data.
+							Overall, the points in the graph show a positive linear trend, that is, as the actual house
+							price increases, the predicted house price of the model also increases, which means that the
+							model is basically able to capture the overall change trend of house price.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/1.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/2.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Histogram of Prediction Errors</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">Concentrated distribution of errors:
+							As can be seen from the figure, most of the prediction errors are concentrated around
+							0, especially in the range from -2000 to 2000, indicating that the prediction errors
+							of the model are mostly small, and the model is more accurate in predicting the price
+							of most real estate.
+							The shape of the error distribution:
+							The errors appear to be close to a normal distribution (bell curve), most of the
+							prediction errors are concentrated in the center, indicating that the model's predictions
+							are basically accurate, and only a few prediction errors are large.
+							Left-right deviation:
+							The negative error (left) means that the model underestimates real house prices, and
+							the positive error (right) means that the model overestimates house prices.
+							As can be seen from the graph, the distribution of errors is slightly more in the
+							negative (underestimation) region than in the positive (overestimation) region, which
+							may mean that the model is more inclined to underestimate house prices.
+							Special Error:
+							There are fewer data points with large errors in the -8000 to -4000 and 2000 to 4000
+							ranges, indicating that the model may occasionally have large forecast errors in extreme
+							cases (such as high - or low-priced properties), but these cases are less common.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
 
-					<nav class="main_nav">
-						<ul class="main_nav_list">
-							<li class="main_nav_item"><a href="/">prediction</a></li>
-							<li class="main_nav_item"><a href="#">visualization</a></li>
-						</ul>
-					</nav>
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Box Plot of Prediction Errors By Price Range</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">It shows the model's forecast error distribution across three price ranges
+							(low,
+							mid-price, and high price), The forecast error distribution of low price houses is wide ,
+							the error
+							is large, and there are many outliers (high error). The median price house has a smaller
+							error, but
+							there are still some outliers with unusually high errors. The error of high-priced houses is
+							the
+							smallest, the distribution is more concentrated, and the overall forecast is more accurate.
+						</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/3.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/4.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Trend of Relative Error with Price</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">Low-priced rooms (<20,000) : The error fluctuates greatly and the model
+								tends to overestimate. Medium and high-priced homes (>20,000) : The error is relatively
+								small and more
+								concentrated, and the forecast is more accurate. The general trend is that with the
+								increase of
+								housing prices, the forecast error gradually decreases and tends to be stable.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Average Absolute Error by Price Range</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">The chart shows the average absolute error for different price ranges:
+							low-priced
+							homes (≤15k) have the highest average error of about 6%, and mid-priced homes (15K-30K) have
+							the
+							lowest average error of about 3%. The average error for higher-priced homes (>30k) is
+							somewhere in
+							between, about 5%. Conclusion: The prediction of the model is the most accurate in the
+							middle price
+							house, and the error is the largest in the low price house.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/5.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/6.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Heatmap of Error Distribution</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">This graph is a heat map of error distribution, showing the relationship
+							between prediction error and actual price. The horizontal axis represents actual prices, and
+							the vertical axis represents prediction errors. The depth of color indicates the frequency,
+							and the color bar displays the range of frequencies, from light yellow (low frequency) to
+							deep red (high frequency).</p>
+						<p class="intro_text">From the graph, it can be seen that most of the prediction errors are
+							concentrated in the lower range of actual prices, and the error values are relatively small.
+							As the actual price increases, the distribution of prediction errors becomes more dispersed,
+							but the frequency decreases. This indicates that the model's predictions are more accurate
+							in the lower price range, while the prediction errors are larger in the higher price range,
+							and the accuracy of the predictions has decreased. Heat maps help us intuitively understand
+							the predictive performance of models in different price ranges.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
 
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Cumulative Error Distribution</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">This graph is a cumulative error distribution chart, showing the
+							cumulative proportion of absolute relative error. The horizontal axis represents the
+							percentage of absolute relative error, and the vertical axis represents the cumulative
+							proportion. </p>
+						<p class="intro_text">From the graph, it can be seen that as the absolute relative error
+							increases,
+							the cumulative ratio rapidly rises and approaches 1 at lower error values, indicating that
+							most predictions have smaller errors. This may mean that the predictive model has high
+							accuracy in most cases, but there may also be some significant errors. The shape of the
+							chart is similar to an S-shaped curve, which is a typical characteristic of the cumulative
+							distribution function (CDF).</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/7.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/8.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Prediction Accuracy Distribution</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">This chart is a bar chart showing the distribution of prediction accuracy.
+							The horizontal axis represents the relative error range, and the vertical axis represents
+							the sample size. The figure shows that the relative error of most predictions is between
+							0-5%, and the sample size is close to 2000, indicating that the model predicts very
+							accurately in most cases. As the relative error range increases, the sample size
+							significantly decreases. There are approximately 600 samples within the 5-10% error range,
+							while the sample size further decreases within the 10-15% error range. The sample size for
+							error ranges of 15-20% and above 20% is very small and can be almost negligible. This
+							indicates that the model has high prediction accuracy in most cases, but may have
+							significant errors in some cases.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
 
 				</div>
 			</div>
 		</div>
-	</div>
-</header>
 
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Actual_Area Interval Statistics</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">This bar chart shows the counting statistics of different area intervals.
+							The count is highest in the 300-600 square foot range, reaching 8078. As the area increases,
+							the count decreases, and the lowest count is only 1 in the 3000-3300 square foot range. The
+							chart reflects that small-sized properties are more common.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/9.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/10.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Monthly Average Sold Price and Numbers Change Trend Chart</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">This chart shows the trend of monthly average selling price (MASP) and
+							sales quantity from November 2023 to November 2024. The blue line represents the average
+							selling price, and the orange line represents the sales quantity. The graph shows that the
+							average selling price remained relatively stable throughout the entire period, with slight
+							fluctuations. The sales volume reached its peak in September 2024, followed by a significant
+							decline in October and November. The green and red dashed lines respectively mark the start
+							and end dates of the data. Overall, despite significant fluctuations in sales volume, the
+							average selling price has maintained a certain level of stability.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
 
-<!-- Listings -->
-<div class="intro" style="margin-top: 5%;">
-	<div class="container">
-		<div class="row" style="justify-content: center">
-			<div class="col-6 col-lg-6">
-				<div class="intro_image">
-					<img src="images/structure.png" alt="" style="max-width: 100%; height: auto;">
-				</div>
-			</div>
-			<div class="col-6 order-lg-2 order-1">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">This flowchart shows the architecture of a deep neural network (DNN)
-					for predicting a continuous value. Its structure and data flow from left to right. First
-					Hidden Layer contains 128 neurons, and the Batch Normalization is for accelerate the
-					training process of the network and improve the stability of the model to prevent problems
-					such as disappearing gradients or explosions. Dropout technology is applied before passing
-					on to the next hidden layer. This is a regularization method that randomly drops some neurons
-					to prevent the model from overfitting. The Second Hidden Layer contains 64 neurons, further
-					extract and process the features learned in the previous layer.The Second Hidden Layer contains
-					32 neurons which are ready for compression and refining feature representation.The output layer
-					consists of one neuron that outputs the final predicted house price.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-
-		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">Most of the blue dots are close to the red dotted line, especially in the
-					20,000 to 60,000 price range, indicating that the model is more accurate in this range.
-					However, in the higher price range (over 60,000), some blue dots can be seen to deviate from
-					the red dotted line, indicating that the model has a certain error in the prediction of
-					high-priced properties, perhaps due to the lack of high-priced housing data, or the model's
-					insufficient generalization ability on high-priced housing data.
-					Overall, the points in the graph show a positive linear trend, that is, as the actual house
-					price increases, the predicted house price of the model also increases, which means that the
-					model is basically able to capture the overall change trend of house price.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/1.png" alt="" style="max-width: 100%; height: auto;">
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/2.png" alt="" style="max-width: 100%; height: auto;">
-				</div>
-			</div>
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">Concentrated distribution of errors:
-					As can be seen from the figure, most of the prediction errors are concentrated around
-					0, especially in the range from -2000 to 2000, indicating that the prediction errors
-					of the model are mostly small, and the model is more accurate in predicting the price
-					of most real estate.
-					The shape of the error distribution:
-					The errors appear to be close to a normal distribution (bell curve), most of the
-					prediction errors are concentrated in the center, indicating that the model's predictions
-					are basically accurate, and only a few prediction errors are large.
-					Left-right deviation:
-					The negative error (left) means that the model underestimates real house prices, and
-					the positive error (right) means that the model overestimates house prices.
-					As can be seen from the graph, the distribution of errors is slightly more in the
-					negative (underestimation) region than in the positive (overestimation) region, which
-					may mean that the model is more inclined to underestimate house prices.
-					Special Error:
-					There are fewer data points with large errors in the -8000 to -4000 and 2000 to 4000
-					ranges, indicating that the model may occasionally have large forecast errors in extreme
-					cases (such as high - or low-priced properties), but these cases are less common.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-
-		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">It shows the model's forecast error distribution across three price ranges (low,
-					mid-price, and high price), The forecast error distribution of low price houses is wide , the error
-					is large, and there are many outliers (high error). The median price house has a smaller error, but
-					there are still some outliers with unusually high errors. The error of high-priced houses is the
-					smallest, the distribution is more concentrated, and the overall forecast is more accurate.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/3.png" alt="" style="max-width: 100%; height: auto;">
+		<div class="intro" style="margin-top: 3%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-8 col-lg-6">
+						<h2 class="intro_title">Distribution of Second-hand Houses in Hong Kong</h2>
+						<div class="intro_subtitle">Design by mAtrIx</div>
+						<p class="intro_text">This picture shows the distribution of second-hand houses in Hong Kong.
+							The location of second-hand houses is marked with yellow dots on the map, and the depth of
+							the color may represent the density of the number of houses. From the graph, it can be seen
+							that second-hand houses are mainly concentrated in the central areas of Hong Kong, such as
+							Kowloon, Hong Kong Island, and the New Territories. The number of second-hand houses in Yuen
+							Long and outlying islands is relatively small. This chart helps to understand the
+							geographical distribution characteristics of the second-hand housing market in Hong Kong,
+							providing reference for home buyers or investors.</p>
+						<div class="button intro_button trans_200"><a class="trans_200"></a></div>
+					</div>
+					<div class="col-4 col-lg-6">
+						<div class="intro_image">
+							<img src="images/11.png" alt="" style="max-width: 100%; height: auto;">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/4.png" alt="" style="max-width: 100%; height: auto;">
-				</div>
-			</div>
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">Low-priced rooms (<20,000) : The error fluctuates greatly and the model tends to
-					overestimate. Medium and high-priced homes (>20,000) : The error is relatively small and more
-					concentrated, and the forecast is more accurate. The general trend is that with the increase of
-					housing prices, the forecast error gradually decreases and tends to be stable.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">The chart shows the average absolute error for different price ranges: low-priced
-					homes (≤15k) have the highest average error of about 6%, and mid-priced homes (15K-30K) have the
-					lowest average error of about 3%. The average error for higher-priced homes (>30k) is somewhere in
-					between, about 5%. Conclusion: The prediction of the model is the most accurate in the middle price
-					house, and the error is the largest in the low price house.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/5.png" alt="" style="max-width: 100%; height: auto;">
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/6.png" alt="" style="max-width: 100%; height: auto;">
-				</div>
-			</div>
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">This graph is a heat map of the error distribution, showing the distribution of
-					the forecast error with the actual house price, Most of the errors are concentrated in the range of
-					15,000-25,000 real house prices, and the error is close to 0, indicating that the model's prediction
-					is more accurate in this range.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-
-		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">This cumulative error distribution chart shows that about 90% of house price
-					forecasts are within 10%, indicating that the model as a whole has a high forecast accuracy, and the
-					vast majority of data has a small error.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/7.png" alt="" style="max-width: 100%; height: auto;">
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="intro" style="margin-top: 3%;">
-	<div class="container">
-		<div class="row">
-			<div class="col-4 col-lg-4">
-				<div class="intro_image">
-					<img src="images/8.png" alt="" style="max-width: 100%; height: auto;">
-				</div>
-			</div>
-			<div class="col-8 col-lg-8">
-				<h2 class="intro_title">DDN structure diagram</h2>
-				<div class="intro_subtitle">Design by mAtrIx</div>
-				<p class="intro_text">This graph shows the distribution of prediction accuracy of the model, where the
-					relative error of most samples is between 0 and 5%, showing that the model's prediction of most
-					house prices is very accurate, and the error of more than 10% is very rare.</p>
-				<div class="button intro_button trans_200"><a class="trans_200"></a></div>
-			</div>
-
-		</div>
-	</div>
-</div>
 </body>
 
 <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>

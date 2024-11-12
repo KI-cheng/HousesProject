@@ -224,30 +224,30 @@
 <script src="{{ url_for('static', filename='plugins/easing/easing.js') }}"></script>
 <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
 <script>
-    // 为按钮点击事件绑定一个函数
+    // Bind a function to the button click event
     $('.search_submit_button').click(function () {
-        // 切换 Div 的可见性
+        // Switch the visibility of Div
         $('.testimonials').css('display', 'block')
     });
 </script>
 <script>
     $(document).ready(function () {
         $('.search_form').on('submit', function (e) {
-            e.preventDefault(); // 阻止表单默认提交行为
+            e.preventDefault(); // Prevent the default form submission behavior
 
-            // 通过 serialize() 方法获取表单数据
+            // Get form data using the serialize() method
             var formData = $(this).serialize();
 
             $.ajax({
-                url: '/query',  // Flask路由地址
+                url: '/query',  // Flask route address
                 type: 'POST',
-                data: formData, // 发送表单数据
+                data: formData, // Send form data
                 dataType: 'json',
                 success: function (response) {
-                    // 清空表格内容
+                    // Clear table content
                     $('.datatable1').empty();
 
-                    // 更新表格数据
+                    // Update table data
                     response.data.forEach(function (row) {
                         var tr = $('<tr>');
                         row.forEach(function (cell) {
@@ -265,8 +265,8 @@
                     }, 100);
                 },
                 error: function (xhr, status, error) {
-                    console.error('查询失败:', error);
-                    alert('查询失败，请重试');
+                    console.error('Query failed:', error);
+                    alert('Query failed, please retry');
                 }
             });
         });
