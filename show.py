@@ -14,7 +14,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 def load_model_and_data():
     # Read data
-    df = pd.read_csv('./static/data/rent.csv')
+    df = pd.read_csv('./static/data/rent11.csv')
 
     # Split data into training and validation sets
     _, val_df = train_test_split(df, test_size=0.2, random_state=42)
@@ -162,8 +162,22 @@ def print_statistical_summary():
         print(f"Standard Deviation of Relative Error: {range_data['Relative Error'].std():.2f}%")
         print(f"Maximum Relative Error: {range_data['Relative Error'].abs().max():.2f}%")
 
+def temp():
+    model, val_loader, val_df = load_model_and_data()
+    predictions, targets = get_predictions(model, val_loader)
+    errors = predictions - targets
+    relative_errors = (errors / targets) * 100
+
+    plt.figure(figsize=(10, 8))
+    plt.scatter(targets, predictions, alpha=0.5)
+    plt.plot([min(targets), max(targets)], [min(targets), max(targets)], 'r--')
+    plt.xlabel('Actual Price')
+    plt.ylabel('Predicted Price')
+    plt.title('Comparison of Predicted and Actual Values')
+    plt.show()
+    plt.close()
 def main():
-    plot_prediction_analysis()
+    temp()
     print_statistical_summary()
 
 
