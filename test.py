@@ -5,9 +5,26 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from tabulate import tabulate
 from prediction import HouseDataset, PricePredictor
+import matplotlib
 
+matplotlib.rcParams['font.sans-serif'] = ['SimHei']
+matplotlib.rcParams['axes.unicode_minus'] = False
+def show(actual_prices, predicted_prices):
+    plt.figure(figsize=(10, 6))
+    plt.scatter(actual_prices, predicted_prices, alpha=0.5)
 
-def predict_prices(model_path='./static/model/best_model1.pth', data_path='./static/data/rent11.csv', num_samples=400):
+    # 添加对角线
+    min_val = min(actual_prices.min(), predicted_prices.min())
+    max_val = max(actual_prices.max(), predicted_prices.max())
+    plt.plot([min_val, max_val], [min_val, max_val], 'r--', lw=2)
+
+    plt.xlabel('实际价格')
+    plt.ylabel('预测价格')
+    plt.title('model6  rent.csv房价预测散点图')
+    plt.tight_layout()
+    plt.show()
+
+def predict_prices(model_path='./static/model/best_model6.pth', data_path='./static/data/rent.csv', num_samples=440):
     df = pd.read_csv(data_path)
 
     sample_df = df.sample(n=num_samples, random_state=np.random.randint(1, 100000))
@@ -43,9 +60,9 @@ def predict_prices(model_path='./static/model/best_model1.pth', data_path='./sta
         'prediction price(HKD)': predictions,
     })
     results_df = results_df.round(2)
-    results_df.to_csv('./static/results/result1.csv', index=False)
+    # results_df.to_csv('./static/results/result1.csv', index=False)
     # print(tabulate(results_df, headers='keys', tablefmt='pretty', floatfmt='.2f'))
-
+    # show(actual_prices, predictions)
     return results_df
 
 

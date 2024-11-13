@@ -99,96 +99,69 @@ class Loss(nn.Module):
     def __init__(self, penalty_weight=0.45):
         super().__init__()
         self.penalty_weight = penalty_weight
+        self.price_ranges = [
+            (0, 15000, 2.0),  # 低价
+            (15000, 20000, 2.5),  # 中价（重点关注）
+            (20000, 40000, 2.5),  # 中高价
+            (40000, float('inf'), 3.5)  # 高价
+        ]
 
-    def forward(self, pred, target):
+    def calculate_weighted_penalty(self, error, mask, weight):
+        if not torch.any(mask):
+            return 0
+        masked_error = error[mask]
+        return torch.mean(torch.square(masked_error)) * self.penalty_weight * weight
+
+    def forward(self, pred, target, area=None):
         pred = pred.squeeze()
         target = target.squeeze()
 
         # 基础MSE损失
         base_loss = F.mse_loss(pred, target)
-
-        # 计算相对误差
         relative_error = torch.abs(pred - target) / target
 
-        # 地区价值判断
-        def get_location_value(price_per_area):
-            # 根据单价判断地区价值
-            high_value = price_per_area > 45  # 每平方尺45以上视为高价值区域
-            medium_value = (price_per_area > 35) & (price_per_area <= 45)
-            return high_value, medium_value
+        # 区域价值惩罚
+        high_value_mask = target > 45
+        medium_value_mask = (target > 35) & (target <= 45)
+        urban_mask = high_value_mask | medium_value_mask
 
-        # 计算每平方尺价格
-        price_per_area = target / target  # 这里应该用实际面积，需要从数据集传入
-
-        # 地区价值掩码
-        high_value_mask, medium_value_mask = get_location_value(price_per_area)
-
-        # 市区房产特殊处理
-        def urban_property_penalty(pred, target):
-            urban_mask = high_value_mask | medium_value_mask
-            if not torch.any(urban_mask):
-                return 0
-
+        if torch.any(urban_mask):
+            underestimate = pred[urban_mask] < target[urban_mask]
             urban_error = relative_error[urban_mask]
-            # 对低估进行更强的惩罚
-            underestimation_mask = pred[urban_mask] < target[urban_mask]
-            urban_penalty = torch.where(
-                underestimation_mask,
-                urban_error * 3.0,  # 低估惩罚
-                urban_error * 1.5  # 高估惩罚
-            )
-            return torch.mean(torch.square(urban_penalty)) * self.penalty_weight
+            urban_penalty = torch.where(underestimate, urban_error * 3.0, urban_error * 1.5)
+            urban_loss = torch.mean(torch.square(urban_penalty)) * self.penalty_weight
+        else:
+            urban_loss = 0
 
         # 价格区间惩罚
-        def range_penalty(lower, upper, weight):
-            mask = (target >= lower) & (target < upper)
-            if not torch.any(mask):
-                return 0
-
-            range_error = relative_error[mask]
-            return torch.mean(torch.square(range_error)) * self.penalty_weight * weight
-
-        # 价格区间定义
-        ranges = [
-            (0, 15000, 2.0),  # 低价
-            (15000, 20000, 2.5),  # 中价（重点关注）
-            (20000, 30000, 2.2),  # 中高价
-            (30000, float('inf'), 2.0)  # 高价
-        ]
-
-        # 低估保护
-        def underestimation_protection(pred, target):
-            mask = pred < (target * 0.9)  # 低估超过10%
-            if not torch.any(mask):
-                return 0
-
-            under_error = relative_error[mask]
-            return torch.mean(torch.square(under_error)) * self.penalty_weight * 2.8
-
-        # 面积影响调整
-        def area_adjustment(pred, target, actual_area):  # 需要从数据集传入实际面积
-            large_area_mask = actual_area > 800
-            if not torch.any(large_area_mask):
-                return 0
-
-            area_error = relative_error[large_area_mask]
-            return torch.mean(torch.square(area_error)) * self.penalty_weight * 1.5
-
-        # 计算总惩罚
-        range_penalties = sum(range_penalty(lower, upper, weight)
-                              for lower, upper, weight in ranges)
-
-        total_penalty = (
-                urban_property_penalty(pred, target) +
-                range_penalties +
-                underestimation_protection(pred, target) +
-                area_adjustment(pred, target, target)  # 实际面积需要从数据集传入
+        range_loss = sum(
+            self.calculate_weighted_penalty(
+                relative_error,
+                (target >= lower) & (target < upper),
+                weight
+            )
+            for lower, upper, weight in self.price_ranges
         )
 
-        return base_loss + total_penalty
+        # 低估保护
+        underestimate_mask = pred < (target * 0.95)
+        underestimate_loss = self.calculate_weighted_penalty(
+            relative_error, underestimate_mask, 3.5
+        )
+
+        # 面积调整惩罚
+        area_loss = 0
+        if area is not None:
+            large_area_mask = area > 800
+            area_loss = self.calculate_weighted_penalty(
+                relative_error, large_area_mask, 1.5
+            )
+
+        total_loss = base_loss + urban_loss + range_loss + underestimate_loss + area_loss
+        return total_loss
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=160, patience=10):
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=180, patience=10):
     # model 神经网络模型
     # train_loader 训练数据加载器
     # val_loader 验证数据加载器
@@ -251,7 +224,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             best_val_loss = val_loss
             best_model_weights = model.state_dict().copy()
             early_stopping_counter = 0
-            torch.save(model.state_dict(), f'./static/model/best_model1.pth')
+            torch.save(model.state_dict(), f'./static/model/best_model6.pth')
         else:
             early_stopping_counter += 1
             if early_stopping_counter >= patience:
@@ -282,16 +255,16 @@ def main():
     model = PricePredictor(input_size)
 
     # 定义损失函数和优化器
-    criterion = Loss(penalty_weight=0.4)
+    criterion = Loss(penalty_weight=0.6)
     # 使用Adam添加L2正则化防止过拟合
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.0008, weight_decay=1e-5)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0006, weight_decay=5e-6)
 
     # 训练模型
     train_model(model, train_loader, val_loader, criterion, optimizer)
     analyze_predictions(model, val_loader)
 
 
-def analyze_predictions(model, val_loader, path='./static/model/best_model1.pth'):  # 查看具体预测效果
+def analyze_predictions(model, val_loader, path='./static/model/best_model6.pth'):  # 查看具体预测效果
     model.load_state_dict(torch.load(path, weights_only=True))
     model.eval()
     predictions = []
