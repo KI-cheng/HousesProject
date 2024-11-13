@@ -11,6 +11,7 @@ import matplotlib
 matplotlib.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
 
+
 class HouseDataset:
     def __init__(self, df):
         self.df = df.copy()
@@ -114,6 +115,7 @@ def main():
     plt.title('随机森林rent11.csv房价预测散点图')
     plt.tight_layout()
     plt.show()
+
 
 if __name__ == "__main__":
     main()

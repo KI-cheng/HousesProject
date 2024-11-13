@@ -20,11 +20,11 @@ def show(actual_prices, predicted_prices):
 
     plt.xlabel('实际价格')
     plt.ylabel('预测价格')
-    plt.title('model6  rent.csv房价预测散点图')
+    plt.title('model7  rent.csv房价预测散点图')
     plt.tight_layout()
     plt.show()
 
-def predict_prices(model_path='./static/model/best_model6.pth', data_path='./static/data/rent.csv', num_samples=440):
+def predict_prices(model_path='./static/model/best_model7.pth', data_path='./static/data/rent.csv', num_samples=440):
     df = pd.read_csv(data_path)
 
     sample_df = df.sample(n=num_samples, random_state=np.random.randint(1, 100000))
