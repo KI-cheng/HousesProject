@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import joblib
 from prediction import HouseDataset, PricePredictor
+from model_evaluation import evaluate_model
 import matplotlib
 
 # 设置中文显示
@@ -11,7 +12,7 @@ matplotlib.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
 
 
-def plot_prediction_scatter(actual_prices, predicted_prices, title="集成模型 rent11.csv房价预测散点图"):
+def plot_prediction_scatter(actual_prices, predicted_prices, title="Ensemble Method--rent11.csv"):
     plt.figure(figsize=(10, 6))
     # 绘制散点
     plt.scatter(actual_prices, predicted_prices, alpha=0.5)
@@ -22,8 +23,8 @@ def plot_prediction_scatter(actual_prices, predicted_prices, title="集成模型
     plt.plot([min_val, max_val], [min_val, max_val], 'r--', lw=2)
 
     # 设置标签和标题
-    plt.xlabel('实际价格')
-    plt.ylabel('预测价格')
+    plt.xlabel('actual price')
+    plt.ylabel('predict price')
     plt.title(title)
     plt.tight_layout()
     plt.show()
@@ -77,35 +78,35 @@ def ensemble_predict(
         mlp_path='./static/model/best_model6.pth',  # 使用model6
         rf_path='./static/model/RF_model.joblib',
         data_path='./static/data/rent.csv',
-        num_samples=1000
+        num_samples=10000
 ):
-    # 1. 数据准备
+    # 数据准备
     df = pd.read_csv(data_path)
     sample_df = df.sample(n=num_samples, random_state=42)  # 固定随机种子以便复现
     dataset = HouseDataset(sample_df)
     actual_prices = sample_df['sold_price(HKD)'].values
 
-    # 2. 加载MLP模型
+    # 加载MLP模型
     input_size = dataset.features.shape[1]
     mlp_model = PricePredictor(input_size)
     mlp_model.load_state_dict(torch.load(mlp_path, weights_only=True))
     mlp_model.eval()
 
-    # 3. 加载随机森林模型
+    # 加载随机森林
     rf_model = joblib.load(rf_path)
 
-    # 4. 获取预测结果
+    # 获取预测结果
     with torch.no_grad():
         mlp_predictions = mlp_model(dataset.features).squeeze().numpy()
     rf_predictions = rf_model.predict(dataset.features)
 
-    # 5. 动态权重集成预测
+    # 权重集成预测
     ensemble_predictions = np.zeros_like(mlp_predictions)
     for i, price in enumerate(actual_prices):
         mlp_weight, rf_weight = get_dynamic_weights(price)
         ensemble_predictions[i] = mlp_weight * mlp_predictions[i] + rf_weight * rf_predictions[i]
 
-    # 6. 准备结果数据（包含单独模型的预测结果）
+    # 准备结果数据（包含单独模型的预测结果）
     results_df = prepare_results_dataframe(
         sample_df,
         actual_prices,
@@ -114,17 +115,12 @@ def ensemble_predict(
         rf_predictions
     )
 
-    # 7. 计算并打印评估指标
-    ensemble_mape = np.mean(np.abs((actual_prices - ensemble_predictions) / actual_prices)) * 100
-    mlp_mape = np.mean(np.abs((actual_prices - mlp_predictions) / actual_prices)) * 100
-    rf_mape = np.mean(np.abs((actual_prices - rf_predictions) / actual_prices)) * 100
-
-    print(f"集成模型 MAPE: {ensemble_mape:.2f}%")
-    print(f"MLP模型 MAPE: {mlp_mape:.2f}%")
-    print(f"随机森林模型 MAPE: {rf_mape:.2f}%")
-
-    # 8. 绘制预测散点图
-    plot_prediction_scatter(actual_prices, ensemble_predictions)
+    # 散点图
+    # plot_prediction_scatter(actual_prices, ensemble_predictions)
+    # 评价纸币奥
+    # metrics_ensemble = evaluate_model(actual_prices, ensemble_predictions, "Ensemble")
+    # metrics_mlp = evaluate_model(actual_prices, mlp_predictions, "MLP")
+    # metrics_rf = evaluate_model(actual_prices, rf_predictions, "Random Forest")
 
     return results_df
 

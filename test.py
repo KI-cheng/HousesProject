@@ -15,7 +15,6 @@ def calculate_msemape(actual, predicted):
     mse = np.mean((actual - predicted) ** 2)
     mape = np.mean(np.abs((actual - predicted) / actual)) * 100
 
-    # 打印结果
     print(f"MSE: {mse:,.2f}")
     print(f"RMSE: {np.sqrt(mse):,.2f}")
     print(f"MAPE: {mape:.2f}%")
@@ -32,14 +31,14 @@ def show(actual_prices, predicted_prices):
     max_val = max(actual_prices.max(), predicted_prices.max())
     plt.plot([min_val, max_val], [min_val, max_val], 'r--', lw=2)
 
-    plt.xlabel('实际价格')
-    plt.ylabel('预测价格')
+    plt.xlabel('actual price')
+    plt.ylabel('predict price')
     plt.title('MLPmodel6--rent11.csv')
     plt.tight_layout()
     plt.show()
 
 
-def predict_prices(model_path='./static/model/best_model6.pth', data_path='./static/data/rent.csv', num_samples=1000):
+def predict_prices(model_path='./static/model/best_model6.pth', data_path='./static/data/rent11.csv', num_samples=440):
     df = pd.read_csv(data_path)
 
     sample_df = df.sample(n=num_samples, random_state=np.random.randint(1, 100000))
