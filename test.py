@@ -9,6 +9,20 @@ import matplotlib
 
 matplotlib.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
+
+
+def calculate_msemape(actual, predicted):
+    mse = np.mean((actual - predicted) ** 2)
+    mape = np.mean(np.abs((actual - predicted) / actual)) * 100
+
+    # 打印结果
+    print(f"MSE: {mse:,.2f}")
+    print(f"RMSE: {np.sqrt(mse):,.2f}")
+    print(f"MAPE: {mape:.2f}%")
+
+    return mse, mape
+
+
 def show(actual_prices, predicted_prices):
     plt.figure(figsize=(10, 6))
     plt.scatter(actual_prices, predicted_prices, alpha=0.5)
@@ -20,11 +34,12 @@ def show(actual_prices, predicted_prices):
 
     plt.xlabel('实际价格')
     plt.ylabel('预测价格')
-    plt.title('model7  rent.csv房价预测散点图')
+    plt.title('MLPmodel6--rent11.csv')
     plt.tight_layout()
     plt.show()
 
-def predict_prices(model_path='./static/model/best_model7.pth', data_path='./static/data/rent.csv', num_samples=440):
+
+def predict_prices(model_path='./static/model/best_model6.pth', data_path='./static/data/rent.csv', num_samples=1000):
     df = pd.read_csv(data_path)
 
     sample_df = df.sample(n=num_samples, random_state=np.random.randint(1, 100000))
@@ -62,7 +77,8 @@ def predict_prices(model_path='./static/model/best_model7.pth', data_path='./sta
     results_df = results_df.round(2)
     # results_df.to_csv('./static/results/result1.csv', index=False)
     # print(tabulate(results_df, headers='keys', tablefmt='pretty', floatfmt='.2f'))
-    # show(actual_prices, predictions)
+    show(actual_prices, predictions)
+    calculate_msemape(actual_prices,predictions)
     return results_df
 
 

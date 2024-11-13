@@ -3,10 +3,11 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
+import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-
+import joblib
 
 matplotlib.rcParams['font.sans-serif'] = ['SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
@@ -60,6 +61,74 @@ class HouseDataset:
         return self.features, self.labels
 
 
+def plot_feature_importances(model, train_dataset):
+    # 获取特征重要性
+    feature_importances = model.feature_importances_
+
+    # 获取特征名称
+    feature_names = [
+        'address_encoded',
+        'region_encoded',
+        'actual_area(ft.)',
+        'built_area(ft.)',
+        'actual_price(HKD/ft.)',
+        'built_price(HKD/ft.)',
+        'price_per_actual_area',
+        'area_ratio'
+    ]
+
+    # 创建一个DataFrame来存储特征名称和它们的重要性
+    feature_importance_df = pd.DataFrame({
+        'Feature': feature_names,
+        'Importance': feature_importances
+    })
+
+    # 按照重要性排序
+    feature_importance_df = feature_importance_df.sort_values(by='Importance', ascending=False)
+
+    # 绘制条形图
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='Importance', y='Feature', data=feature_importance_df)
+    plt.title('Feature Importances')
+    plt.xlabel('Importance')
+    plt.ylabel('Feature')
+    plt.show()
+
+
+def plot_convergence(model, X_train, y_train, X_val, y_val, max_estimators=200):
+    # 存储不同数量的树对应的性能指标
+    train_errors = []
+    val_errors = []
+
+    # 逐步增加树的数量，从1到max_estimators
+    for i in range(1, max_estimators + 1, 5):  # 步长为5，可以根据需要调整
+        model.set_params(n_estimators=i)
+        model.fit(X_train, y_train)
+
+        # 预测
+        y_train_pred = model.predict(X_train)
+        y_val_pred = model.predict(X_val)
+
+        # 计算MSE
+        train_mse = mean_squared_error(y_train, y_train_pred)
+        val_mse = mean_squared_error(y_val, y_val_pred)
+
+        # 存储误差
+        train_errors.append(train_mse)
+        val_errors.append(val_mse)
+
+    # 绘制图表
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, max_estimators + 1, 5), train_errors, label='Train MSE', marker='o')
+    plt.plot(range(1, max_estimators + 1, 5), val_errors, label='Validation MSE', marker='o')
+    plt.xlabel('Number of Trees')
+    plt.ylabel('Mean Squared Error (MSE)')
+    plt.title('Model Convergence with Number of Trees')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
 def main():
     # 读取数据
     df = pd.read_csv('./static/data/rent.csv')
@@ -77,10 +146,20 @@ def main():
     X_predict, y_predict = predict_dataset.get_data()
 
     # 初始化模型
-    model = RandomForestRegressor(n_estimators=200, random_state=24)
+    model = RandomForestRegressor(
+        n_estimators=180,  # 适度增加树的数量，提高稳定性
+        max_depth=5,  # 进一步限制树深度，防止过拟合
+        min_samples_split=20,  # 显著增加分裂所需样本数，提高稳定性
+        min_samples_leaf=15,  # 增加叶节点最小样本数，增强泛化能力
+        max_features=0.5,  # 进一步限制特征使用比例
+        bootstrap=True,
+        oob_score=True,  # 启用袋外评估
+        random_state=24
+    )
 
     # 训练模型
     model.fit(X_train, y_train)
+    joblib.dump(model, './static/model/RF_model.joblib')
 
     # 在训练集和验证集上的预测
     y_pred_train = model.predict(X_train)
@@ -95,16 +174,16 @@ def main():
     mape_train = mean_absolute_percentage_error(y_train, y_pred_train) * 100
     mape_val = mean_absolute_percentage_error(y_val, y_pred_val) * 100
 
-    print(f"训练集 MSE: {mse_train:.4f}")
-    print(f"验证集 MSE: {mse_val:.4f}")
-    print(f"训练集 MAPE: {mape_train:.2f}%")
-    print(f"验证集 MAPE: {mape_val:.2f}%")
+    print(f"Train_set MSE: {mse_train:.4f}")
+    print(f"Validate_set MSE: {mse_val:.4f}")
+    print(f"Train_set MAPE: {mape_train:.2f}%")
+    print(f"Validate_set MAPE: {mape_val:.2f}%")
 
     # 输出rent11.csv的预测结果
     print("\nrent11.csv预测样本：")
     print("实际价格       预测价格        差值")
     for i in range(min(50, len(y_predict))):
-        print(f"{y_predict[i]:,.2f}    {y_pred_new[i]:,.2f}        {y_pred_new[i]-y_predict[i]}")
+        print(f"{y_predict[i]:,.2f}    {y_pred_new[i]:,.2f}        {y_pred_new[i] - y_predict[i]}")
 
     # 创建rent11.csv的预测散点图
     plt.figure(figsize=(10, 6))
@@ -112,9 +191,12 @@ def main():
     plt.plot([y_predict.min(), y_predict.max()], [y_predict.min(), y_predict.max()], 'r--', lw=2)
     plt.xlabel('实际价格')
     plt.ylabel('预测价格')
-    plt.title('随机森林rent11.csv房价预测散点图')
+    plt.title('RandomForest--rent11.csv')
     plt.tight_layout()
     plt.show()
+    # plot_feature_importances(model, train_dataset)
+    #
+    # plot_convergence(model, X_train, y_train, X_val, y_val)
 
 
 if __name__ == "__main__":
