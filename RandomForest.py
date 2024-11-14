@@ -87,7 +87,7 @@ def plot_feature_importances(model, train_dataset):
     feature_importance_df = feature_importance_df.sort_values(by='Importance', ascending=False)
 
     # 绘制条形图
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(15, 6))
     sns.barplot(x='Importance', y='Feature', data=feature_importance_df)
     plt.title('Feature Importances')
     plt.xlabel('Importance')
@@ -185,17 +185,17 @@ def main():
     for i in range(min(50, len(y_predict))):
         print(f"{y_predict[i]:,.2f}    {y_pred_new[i]:,.2f}        {y_pred_new[i] - y_predict[i]}")
 
-    # 创建rent11.csv的预测散点图
-    plt.figure(figsize=(10, 6))
-    plt.scatter(y_predict, y_pred_new, alpha=0.5)
-    plt.plot([y_predict.min(), y_predict.max()], [y_predict.min(), y_predict.max()], 'r--', lw=2)
-    plt.xlabel('actual price')
-    plt.ylabel('predict price')
-    plt.title('RandomForest--rent11.csv')
-    plt.tight_layout()
-    plt.show()
-    # plot_feature_importances(model, train_dataset)
-    #
+    # # 创建rent11.csv的预测散点图
+    # plt.figure(figsize=(10, 6))
+    # plt.scatter(y_predict, y_pred_new, alpha=0.5)
+    # plt.plot([y_predict.min(), y_predict.max()], [y_predict.min(), y_predict.max()], 'r--', lw=2)
+    # plt.xlabel('actual price')
+    # plt.ylabel('predict price')
+    # plt.title('RandomForest--rent11.csv')
+    # plt.tight_layout()
+    # plt.show()
+    plot_feature_importances(model, train_dataset)
+
     # plot_convergence(model, X_train, y_train, X_val, y_val)
 
 
